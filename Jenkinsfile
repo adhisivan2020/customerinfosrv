@@ -3,7 +3,10 @@ pipeline {
 	stages {
 		stage('Build') {
 			steps {
-				echo 'running build'
+				echo 'starting build'
+				git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'
+				sh '.gradlew clean build'
+				echo 'build completed'
 			}
 		}
 		stage('Test') {

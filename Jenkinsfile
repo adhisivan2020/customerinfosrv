@@ -1,12 +1,18 @@
 pipeline {
-	agent any
+	agent {node 'master'}
 	stages {
+		stage('Checkout') {
+			steps {
+				git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'
+				echo 'code checkout completed'
+			}
+		}
 		stage('Build') {
 			steps {
-				echo 'starting build'
-				git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'
-				sh '.gradlew clean build'
-				echo 'build completed'
+				script {
+					sh './gradlew clean build --no-daemon'
+					echo 'build completed'
+				}
 			}
 		}
 		stage('Test') {

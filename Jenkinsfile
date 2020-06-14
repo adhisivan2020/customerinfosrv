@@ -23,8 +23,8 @@ pipeline {
 		}
 		stage('Move to Repo') {
 			steps {
-			script {
-				/*echo 'copying package file to Ansible control host'
+			/*script {
+				echo 'copying package file to Ansible control host'
 				sh 'scp -i /home/ec2-user/.ssh/id_rsa build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar ec2-user@172.31.37.245:/home/ec2-user/app/'			
 				
 				echo 'copying systemd service file'
@@ -32,17 +32,17 @@ pipeline {
 				
 				echo 'copying ansible files'
 				sh 'scp -i /home/ec2-user/.ssh/id_rsa ansible/* ec2-user@172.31.37.245:/home/ec2-user/ansible/'
-				*/									
-			}
+													
+			}*/
 			}
 		}
 		stage('Deploy') {
 			agent {node 'ansiblenode'}
 			steps {
 				script {
-				echo 'running deployment'
-				sh 'cd ~/ansible'
-				sh 'ansible-playbook playbooks/installrestsrv.yml'
+					echo 'running deployment'
+					sh 'cd ~/ansible'
+					sh 'ansible-playbook playbooks/installrestsrv.yml'
 				}
 			}		
 		}

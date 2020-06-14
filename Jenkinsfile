@@ -22,10 +22,12 @@ pipeline {
 				echo 'running test'
 			}
 		}
+		
+		withCredentials([sshUserPrivateKey(credentialsId: "JenkinsSSH", keyFileVariable: 'keyfile')] {
 		stage('Move to Repo') {
 			steps {
 				script {
-					withCredentials([sshUserPrivateKey(credentialsId: "JenkinsSSH", keyFileVariable: 'keyfile')] {
+					
 				
 						echo 'copying package file to Ansible control host'
 						sh 'scp -i ${keyfile} build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar ec2-user@172.31.37.245:/home/ec2-user/app/'			
@@ -37,8 +39,8 @@ pipeline {
 						sh 'scp -i ${keyfile} ansible/* ec2-user@172.31.37.245:/home/ec2-user/ansible/'
 					
 					}
-				}
 			}
+		}
 		}
 		stage('Deploy') {
 			agent {node 'ansiblenode'}

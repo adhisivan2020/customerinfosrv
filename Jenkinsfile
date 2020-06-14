@@ -24,6 +24,7 @@ pipeline {
 		}
 		stage('Move to Repo') {
 			steps {
+				script {
 				withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsSSH', keyFileVariable: 'keyfile')] {
 					
 				
@@ -37,6 +38,7 @@ pipeline {
 						sh 'scp -i ${keyfile} ansible/* ec2-user@172.31.37.245:/home/ec2-user/ansible/'
 					
 					}
+				}
 			}
 		}
 		stage('Deploy') {

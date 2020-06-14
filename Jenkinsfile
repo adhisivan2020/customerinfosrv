@@ -4,15 +4,15 @@ pipeline {
 	stages {
 		stage('Checkout') {
 			steps {
-				git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'
+				/*git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'*/
 				echo 'code checkout completed'
 			}
 		}
 		stage('Build') {
 			steps {
 				script {
-					sh 'chmod +x gradlew'
-					sh './gradlew clean build'
+					/*sh 'chmod +x gradlew'
+					sh './gradlew clean build'*/
 					echo 'build completed'
 				}
 			}
@@ -43,7 +43,7 @@ pipeline {
 			steps {
 				script {
 					echo 'running deployment'
-					dir ('~/ansible') {
+					dir ('/home/ec2-user/ansible/') {
 						sh 'pwd'
 						sh 'ansible-playbook playbooks/installrestsrv.yml'
 					}

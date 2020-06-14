@@ -24,7 +24,7 @@ pipeline {
 		}
 		stage('Move to Repo') {
 			steps {
-				withCredentials([sshUserPrivateKey(credentialsId: "JenkinsSSH", keyFileVariable: 'keyfile')] {
+				withCredentials([sshUserPrivateKey(credentialsId: 'JenkinsSSH', keyFileVariable: 'keyfile')] {
 					
 				
 						echo 'copying package file to Ansible control host'

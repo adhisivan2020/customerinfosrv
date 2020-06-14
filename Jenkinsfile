@@ -22,11 +22,9 @@ pipeline {
 				echo 'running test'
 			}
 		}
-		
-		withCredentials([sshUserPrivateKey(credentialsId: "JenkinsSSH", keyFileVariable: 'keyfile')] {
 		stage('Move to Repo') {
 			steps {
-				script {
+				withCredentials([sshUserPrivateKey(credentialsId: "JenkinsSSH", keyFileVariable: 'keyfile')] {
 					
 				
 						echo 'copying package file to Ansible control host'
@@ -40,7 +38,6 @@ pipeline {
 					
 					}
 			}
-		}
 		}
 		stage('Deploy') {
 			agent {node 'ansiblenode'}

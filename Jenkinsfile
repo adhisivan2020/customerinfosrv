@@ -43,9 +43,10 @@ pipeline {
 			steps {
 				script {
 					echo 'running deployment'
-					sh 'cd ~/ansible'
-					sh 'pwd'
-					sh 'ansible-playbook playbooks/installrestsrv.yml'
+					dir ('~/ansible') {
+						sh 'pwd'
+						sh 'ansible-playbook playbooks/installrestsrv.yml'
+					}
 				}
 			}		
 		}

@@ -1,5 +1,6 @@
 pipeline {
 	agent {node 'master'}
+	options { skipDefaultCheckout() }
 	stages {
 		stage('Checkout') {
 			steps {
@@ -43,6 +44,7 @@ pipeline {
 				script {
 					echo 'running deployment'
 					sh 'cd ~/ansible'
+					sh 'pwd'
 					sh 'ansible-playbook playbooks/installrestsrv.yml'
 				}
 			}		

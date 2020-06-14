@@ -1,0 +1,11 @@
+[Unit]
+Description=Customer Info Service
+
+[Service]
+WorkingDirectory=/home/ec2-user/app
+ExecStart=/usr/lib/jvm/jre/bin/java -jar customerinfosrv-0.0.1-SNAPSHOT.jar
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

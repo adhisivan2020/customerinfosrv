@@ -1,0 +1,27 @@
+---
+- hosts: restservers
+  become: true
+  tasks:
+      - name: create app directory
+        file:
+         path: /home/ec2-user/app
+         state: directory
+
+      - name: copy jar file into rest server
+        copy:
+          src: /home/ec2-user/app/customerinfosrv-0.0.1-SNAPSHOT.jar
+          dest: /home/ec2-user/app/customerinfosrv-0.0.1-SNAPSHOT.jar
+          owner: ec2-user
+          mode: '+x'
+
+      - name: copy system service file to system folder
+        copy:
+          src: /home/ec2-user/app/customerinfosrv.service
+          dest: /etc/systemd/system/customerinfosrv.service
+          owner: ec2-user
+
+      - name: restart the customer info services
+        systemd:
+          state: restarted
+          daemon_reload: yes
+          name: customerinfosrv

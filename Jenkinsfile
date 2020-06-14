@@ -21,9 +21,22 @@ pipeline {
 				echo 'running test'
 			}
 		}
+		stage('Move to Repo') {
+			script {
+				echo 'copying package file to Ansible control host'
+				sh 'scp -i /home/ec2-user/.ssh/id_rsa build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar ec2-user@172.31.37.245:/home/ec2-user/app/'			
+				
+				echo 'copying systemd service file'
+				sh 'scp -i /home/ec2-user/.ssh/id_rsa service/customerinfosrv.service ec2-user@172.31.37.245:/home/ec2-user/app/'	
+				
+				echo 'copying ansible files'
+				sh 'scp -i /home/ec2-user/.ssh/id_rsa ansible/* ec2-user@172.31.37.245:/home/ec2-user/ansible/'											
+			}
+		}
 		stage('Deploy') {
 			steps {
 				echo 'running deployment'
+				
 			}		
 		}
 	}

@@ -179,8 +179,11 @@ save () {
 }
 APP_ARGS=`save "$@"`
 
+
+JAVA_OPTS='"-Xmx64m" "-Xms64m"'
+GRADLE_OPTS='"-Xmx64m" "-Xms64m"'
+
 # Collect all arguments for the java command, following the shell quoting and substitution rules
-# $JAVA_OPTS $GRADLE_OPTS these settings were removed from below line --adhi
-eval set -- $DEFAULT_JVM_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
+eval set -- $DEFAULT_JVM_OPTS $JAVA_OPTS $GRADLE_OPTS "\"-Dorg.gradle.appname=$APP_BASE_NAME\"" -classpath "\"$CLASSPATH\"" org.gradle.wrapper.GradleWrapperMain "$APP_ARGS"
 
 exec "$JAVACMD" "$@"

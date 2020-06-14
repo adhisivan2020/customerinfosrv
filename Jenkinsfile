@@ -25,7 +25,7 @@ pipeline {
 		stage('Move to Repo') {
 			steps {
 				withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'JenkinsSSH', keyFileVariable: 'keyfile')]) {
-					    echo '${keyfile}'
+					    echo '$keyfile'
 				
 						echo 'copying package file to Ansible control host'
 						sh 'scp -i ${keyfile} build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar ec2-user@172.31.37.245:/home/ec2-user/app/'			

@@ -22,6 +22,15 @@ pipeline {
 				echo 'running test'
 			}
 		}
+		stage ('sample ftp move') {
+			steps {
+				ftpPublisher alwaysPublishFromMaster: true, continueOnError: false, failOnError: false, publishers: [
+	        		[configName: 'Ansible FTP Server', transfers: [
+	            		[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar']
+	        		], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+    			]
+			}
+		}
 		stage('Move to Repo') {
 			steps {
 				withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'JenkinsSSH', keyFileVariable: 'keyfile')]) {

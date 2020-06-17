@@ -30,9 +30,11 @@ pipeline {
 				echo 'running test'
 			}
 		}
-		stage ('sample sftp move') {
+		stage ('Move to Repo') {
 			steps {
 				script {
+					echo 'copying package file to Ansible control host'
+				
 				  sshPublisher(
 				   continueOnError: false, failOnError: true,
 				   publishers: [
@@ -45,27 +47,20 @@ pipeline {
 				       removePrefix: "${path_to_file}",
 				       remoteDirectory: "${remote_dir_path}",
 				       //execCommand: "run commands after copy?"
-				      )
+				      ),
+					  sshTransfer(
+				       sourceFiles: "service/*",
+				       removePrefix: "service",
+				       remoteDirectory: "${remote_dir_path}"
+				      ),
+					  sshTransfer(
+				       sourceFiles: "ansible/*",
+				       removePrefix: "ansible",
+				       remoteDirectory: "/ansible"
+				      ),				      
 				     ])
 				   ])
 				 }
-			}
-		}
-		stage('Move to Repo') {
-			steps {
-				withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'JenkinsSSH', keyFileVariable: 'keyfile')]) {
-					    echo keyfile
-				
-						echo 'copying package file to Ansible control host'
-						sh 'scp -i $keyfile build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar ec2-user@172.31.37.245:/home/ec2-user/app/'			
-						
-						echo 'copying systemd service file'
-						sh 'scp -i $keyfile service/customerinfosrv.service ec2-user@172.31.37.245:/home/ec2-user/app/'	
-						
-						echo 'copying ansible files'
-						sh 'scp -i $keyfile ansible/* ec2-user@172.31.37.245:/home/ec2-user/ansible/'
-					
-				}
 			}
 		}
 		stage('Deploy') {

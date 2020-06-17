@@ -6,7 +6,7 @@ pipeline {
 		SSH_CONFIG_NAME = 'AnsibleHost'
 		path_to_file = 'build/libs'
 		file_name = 'customerinfosrv-0.0.1-SNAPSHOT.jar'
-		remote_dir_path = '/home/ec2-user/app/'
+		remote_dir_path = '/app'
 	}
 	
 	stages {
@@ -41,7 +41,7 @@ pipeline {
 				     verbose: true,
 				     transfers: [
 				      sshTransfer(
-				       sourceFiles: "${path_to_file}/${file_name}, ${path_to_file}/${file_name}",
+				       sourceFiles: "${path_to_file}/${file_name}",
 				       removePrefix: "${path_to_file}",
 				       remoteDirectory: "${remote_dir_path}",
 				       //execCommand: "run commands after copy?"

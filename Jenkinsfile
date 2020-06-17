@@ -12,15 +12,15 @@ pipeline {
 	stages {
 		stage('Checkout') {
 			steps {
-				/*git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'*/
+				git credentialsId: 'GITID', url: 'https://github.com/adhisivan2020/customerinfosrv.git'
 				echo 'code checkout completed'
 			}
 		}
 		stage('Build') {
 			steps {
 				script {
-					/*sh 'chmod +x gradlew'
-					sh './gradlew clean build'*/
+					sh 'chmod +x gradlew'
+					sh './gradlew clean build'
 					echo 'build completed'
 				}
 			}
@@ -30,7 +30,7 @@ pipeline {
 				echo 'running test'
 			}
 		}
-		stage ('Move to Repo') {
+		stage ('Publish Build') {
 			steps {
 				script {
 					echo 'copying package file to Ansible control host'
@@ -57,13 +57,18 @@ pipeline {
 				       sourceFiles: "ansible/*",
 				       removePrefix: "ansible",
 				       remoteDirectory: "/ansible"
-				      ),				      
+				      ),
+					  sshTransfer(
+				       sourceFiles: "ansible/playbooks/*",
+				       removePrefix: "ansible/playbooks",
+				       remoteDirectory: "/ansible/playbooks"
+				      ),				      				      
 				     ])
 				   ])
 				 }
 			}
 		}
-		stage('Deploy') {
+		stage('App Deploy') {
 			agent {node 'ansiblenode'}
 			steps {
 				script {

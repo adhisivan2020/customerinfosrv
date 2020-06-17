@@ -1,6 +1,14 @@
 pipeline {
 	agent {node 'master'}
 	options { skipDefaultCheckout() }
+	
+	environment {
+		SSH_CONFIG_NAME = 'AnsibleHost'
+		path_to_file = 'build/libs'
+		file_name = 'customerinfosrv-0.0.1-SNAPSHOT.jar'
+		remote_dir_path = '/home/ec2-user/app/'
+	}
+	
 	stages {
 		stage('Checkout') {
 			steps {
@@ -22,13 +30,25 @@ pipeline {
 				echo 'running test'
 			}
 		}
-		stage ('sample ftp move') {
+		stage ('sample sftp move') {
 			steps {
-				ftpPublisher alwaysPublishFromMaster: true, continueOnError: false, failOnError: false, publishers: [
-	        		[configName: 'Ansible FTP Server', transfers: [
-	            		[asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "/", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'build/libs/customerinfosrv-0.0.1-SNAPSHOT.jar']
-	        		], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-    			]
+				script {
+				  sshPublisher(
+				   continueOnError: false, failOnError: true,
+				   publishers: [
+				    sshPublisherDesc(
+				     configName: "${SSH_CONFIG_NAME}",
+				     verbose: true,
+				     transfers: [
+				      sshTransfer(
+				       sourceFiles: "${path_to_file}/${file_name}, ${path_to_file}/${file_name}",
+				       removePrefix: "",
+				       remoteDirectory: "${remote_dir_path}",
+				       //execCommand: "run commands after copy?"
+				      )
+				     ])
+				   ])
+				 }
 			}
 		}
 		stage('Move to Repo') {

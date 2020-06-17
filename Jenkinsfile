@@ -42,7 +42,7 @@ pipeline {
 				     transfers: [
 				      sshTransfer(
 				       sourceFiles: "${path_to_file}/${file_name}, ${path_to_file}/${file_name}",
-				       removePrefix: "",
+				       removePrefix: "${path_to_file}",
 				       remoteDirectory: "${remote_dir_path}",
 				       //execCommand: "run commands after copy?"
 				      )

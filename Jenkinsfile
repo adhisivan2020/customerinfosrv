@@ -72,7 +72,7 @@ pipeline {
 			agent {node 'ansiblenode'}
 			steps {
 				script {
-					echo 'running deployment'
+					echo 'running deployment scripts'
 					dir ('/home/ec2-user/ansible/') {
 						sh 'pwd'
 						sh 'ansible-playbook playbooks/installrestsrv.yml'

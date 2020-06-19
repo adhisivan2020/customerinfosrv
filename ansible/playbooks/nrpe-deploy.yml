@@ -4,8 +4,8 @@
   tasks:
   - name: install epel
     yum:
-     name: epel-release
-     state: latest
+     shell: amazon-linux-extras install epel
+
   - name: install nrpe
     yum:
      name: nrpe

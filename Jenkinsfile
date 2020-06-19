@@ -76,6 +76,7 @@ pipeline {
 					dir ('/home/ec2-user/ansible/') {
 						sh 'pwd'
 						sh 'ansible-playbook playbooks/installrestsrv.yml'
+						sh 'ansible-playbook playbooks/nrpe-deploy.yml'
 					}
 				}
 			}		
